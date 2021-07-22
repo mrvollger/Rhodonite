@@ -16,13 +16,13 @@ This is a modular Snakemake for various repeat masking steps. The `Snakefile` is
 
 ## Loading in **Snakemake**
 
-```
+```python
 configfile: "config/config.yaml"
 
 
 module Rhodonite:
     snakefile:
-		https://github.com/mrvollger/Rhodonite/raw/master/workflow/Snakefile
+		"https://github.com/mrvollger/Rhodonite/raw/master/workflow/Snakefile"
     config:
         config
 
@@ -35,7 +35,7 @@ use rule * from Rhodonite
 
 Requires: [Snakedeploy](https://snakedeploy.readthedocs.io/en/latest/index.html)
 
-```
+```python
 from snakedeploy.deploy import deploy
 
 deploy("https://github.com/mrvollger/Rhodonite",
