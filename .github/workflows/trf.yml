@@ -1,4 +1,4 @@
-name: CI
+name: trf
 
 # Controls when the action will run. 
 on:
@@ -24,4 +24,4 @@ jobs:
       with:
         directory: .
         snakefile: workflow/Snakefile
-        args: "--use-conda --cores 1 --configfile .test/config.yaml"
+        args: "--use-conda --cores 1 --configfile .test/config.yaml results/test/trf/trf.bed.gz"
