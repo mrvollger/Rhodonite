@@ -45,4 +45,4 @@ if __name__ == "__main__":
 
     out = out.rename(columns={"chr": "#chr"})
 
-    out.to_csv(args.outfile, sep="\t", index=False, compression='gzip')
+    out.to_csv(args.outfile, sep="\t", index=False, compression="gzip")

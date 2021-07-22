@@ -24,4 +24,4 @@ jobs:
       with:
         directory: .
         snakefile: workflow/Snakefile
-        args: "--use-conda --cores 1 --configfile .test/config.yaml results/test/RepeatMasker/RM.bed.gz"
+        args: "--use-conda --configfile .test/config.yaml --cores 1 results/test/RepeatMasker/RM.bed.gz"
