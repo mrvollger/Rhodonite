@@ -1,9 +1,9 @@
-# \<your workflow name\>
+# Rhodonite for repeat masking
 
-[![Actions Status](https://github.com/mrvollger/SmkTemplate/workflows/CI/badge.svg)](https://github.com/mrvollger/SmkTemplate/actions)
-[![Actions Status](https://github.com/mrvollger/SmkTemplate/workflows/Linting/badge.svg)](https://github.com/mrvollger/SmkTemplate/actions)
-[![Actions Status](https://github.com/mrvollger/SmkTemplate/workflows/black/badge.svg)](https://github.com/mrvollger/SmkTemplate/actions)
+[![Actions Status](https://github.com/mrvollger/Rhodonite/workflows/RepeatMasker/badge.svg)](https://github.com/mrvollger/Rhodonite/actions)
+[![Actions Status](https://github.com/mrvollger/Rhodonite/workflows/trf/badge.svg)](https://github.com/mrvollger/Rhodonite/actions)
+[![Actions Status](https://github.com/mrvollger/Rhodonite/workflows/DupMasker/badge.svg)](https://github.com/mrvollger/Rhodonite/actions)
+[![Actions Status](https://github.com/mrvollger/Rhodonite/workflows/Linting/badge.svg)](https://github.com/mrvollger/Rhodonite/actions)
+[![Actions Status](https://github.com/mrvollger/Rhodonite/workflows/black/badge.svg)](https://github.com/mrvollger/Rhodonite/actions)
 
-This is a Snakemake project template. The `Snakefile` is under `workflow`.
-
-[Slides](https://mrvollger.github.io/SmkTemplate/slides) describing and justifying the use of this template.
+This is a modular Snakemake for various repeat masking steps. The `Snakefile` is under `workflow`.

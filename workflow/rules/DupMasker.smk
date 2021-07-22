@@ -88,7 +88,7 @@ rule DupMasker:
         fai=lambda wc: f'{config[wc.sample]["ref"]}.fai',
     output:
         extra="results/{sample}/RepeatMasker/duplicons.extra",
-        bed9="results/{sample}/RepeatMasker/duplicons.bed",
+        bed9="results/{sample}/RepeatMasker/duplicons.bed.gz",
     resources:
         mem=4,
     threads: 1
