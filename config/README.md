@@ -1,11 +1,9 @@
 # Configuration options
 
-A description of every valid option in `config.yaml`.
+The only required option is a sample reference pairs list in the `yaml` under `samples`.
 
-e.g.
-
-A prefix for outputs.
-
-```
-sample: a
+```yaml
+samples:
+	HG002_1: "hap1.fasta"
+	HG002_2: "hap2.fasta"
 ```

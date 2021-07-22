@@ -1,1 +1,10 @@
-sample: "a"
+samples:
+  HG002_1: "hap2.fasta"
+  HG002_2: "hap1.fasta"
+  
+# optional configurations
+threads: 16
+mem: 16
+trf_opts: "2 7 7 80 10 50 15 -l 25"
+RepeatMaskerSpecies: "human"
+RepeatMaskerOptions: "-s -xsmall -e ncbi"

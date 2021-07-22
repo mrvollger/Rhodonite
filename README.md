@@ -12,7 +12,7 @@
 
 ## Description
 
-This is a modular Snakemake for various repeat masking steps. The `Snakefile` is under `workflow`.
+This is a modular Snakemake workflow for various repeat masking tools.
 
 ## Loading in **Snakemake**
 
