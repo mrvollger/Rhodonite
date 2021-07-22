@@ -85,10 +85,10 @@ rule DupMasker:
         extra=gather.fasta(
             rules.run_DupMasker_step_3.output.extra, allow_missing=True
         ),
-        fai=lambda wc: f'{config[wc.sample]["ref"]}.fai',
+        fai=lambda wc: f'{config["samples"][wc.sample]}.fai',
     output:
         extra="results/{sample}/RepeatMasker/duplicons.extra",
-        bed9="results/{sample}/RepeatMasker/duplicons.bed.gz",
+        bed="results/{sample}/RepeatMasker/duplicons.bed.gz",
     resources:
         mem=4,
     threads: 1
@@ -106,5 +106,5 @@ rule DupMasker:
         {params.s_dir}/scripts/DupMasker_bed9.py {output.extra} \
             | bedtools sort -header -g {input.fai} -i - \
             | gzip -c \
-            > {output.bed9}
+            > {output.bed}
         """

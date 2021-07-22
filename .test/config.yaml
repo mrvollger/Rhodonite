@@ -1,4 +1,4 @@
-test:
-  ref: .test/test.fa.gz
-
+samples: 
+  test: .test/test.fa.gz
+  test2: .test/test.fa.gz
 

@@ -24,7 +24,7 @@ rule windowmasker:
         ref=rules.unzip_fasta.output.fasta,
         fai=rules.unzip_fasta.output.fai,
     output:
-        dust=temp("results/{sample}/windowmasker/dust.intervals"),
+        intervals=temp("results/{sample}/windowmasker/dust.intervals"),
         bed=temp("results/{sample}/windowmasker/dust.bed.gz"),
     resources:
         mem=config.get("mem", 16),
@@ -38,9 +38,9 @@ rule windowmasker:
     shell:
         """
         windowmasker -ustat {input.counts} -dust true -in {input.ref} \
-            -out {output.dust} 
+            -out {output.intervals} 
 
-        {params.s_dir}/scripts/dust_to_bed.py -i {output.dust} \
+        {params.s_dir}/scripts/dust_to_bed.py -i {output.intervals} \
             | bedtools sort -header -g {input.fai} -i - \
             | gzip -c \
             > {output.bed} 

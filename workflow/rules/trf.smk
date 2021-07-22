@@ -21,7 +21,7 @@ rule run_split_trf:
 rule trf:
     input:
         dat=gather.fasta(rules.run_split_trf.output.dat, allow_missing=True),
-        fai=lambda wc: f'{config[wc.sample]["ref"]}.fai',
+        fai=lambda wc: f'{config["samples"][wc.sample]}.fai',
     output:
         dat="results/{sample}/trf/trf.dat",
         bed="results/{sample}/trf/trf.bed.gz",

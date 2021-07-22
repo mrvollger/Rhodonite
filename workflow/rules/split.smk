@@ -1,6 +1,6 @@
 rule split_fasta:
     input:
-        fasta=lambda wc: config[wc.sample]["ref"],
+        fasta=lambda wc: config["samples"][wc.sample],
     output:
         fasta=temp(
             scatter.fasta(
@@ -24,7 +24,7 @@ rule split_fasta:
 
 rule unzip_fasta:
     input:
-        fasta=lambda wc: config[wc.sample]["ref"],
+        fasta=lambda wc: config["samples"][wc.sample],
     output:
         fasta=temp("results/unzipped/{sample}.fasta"),
         fai=temp("results/unzipped/{sample}.fasta.fai"),

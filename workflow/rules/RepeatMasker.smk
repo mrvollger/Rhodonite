@@ -63,7 +63,7 @@ rule RepeatMasker:
     input:
         out=gather.fasta(rules.run_split_RepeatMasker.output.out, allow_missing=True),
         bed=gather.fasta(rules.make_RepeatMasker_bed.output.bed, allow_missing=True),
-        fai=lambda wc: f'{config[wc.sample]["ref"]}.fai',
+        fai=lambda wc: f'{config["samples"][wc.sample]}.fai',
     output:
         out="results/{sample}/RepeatMasker/RM.out",
         bed="results/{sample}/RepeatMasker/RM.bed.gz",
