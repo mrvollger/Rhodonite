@@ -23,28 +23,31 @@ if TEMP_DIR != "temp":
         shell("ln -s {TEMP_DIR} temp")
 
 
-n_records = config.pop("n_records", 40)
 try:
-    for sample, ref in config["samples"].items():
-        sys.stderr.write(f"Processing the index for {sample}: {ref}.fai\n")
-        try:
-            df = pd.read_csv(f"{ref}.fai", sep="\t", header=None)
-        except:
-            sys.stderr.write(f"{ref}.fai must exist and be readable!")
-            sys.exit(1)
-
-        if df.shape[0] > 0 & df.shape[0] < n_records:
-            n_records = df.shape[0]
+    [(sample, ref) for sample, ref in config["samples"].items()]
 except:
     sys.stderr.write(
-        f"""samples must be configured as a dict of sample reference pairs in the yaml. e.g.
+        f"""[ERROR]: "samples" must be configured as a dict of sample reference pairs in the yaml. e.g.
 
 samples:
     test: ./test/test.fa
     test2: ./test/test2.fa
 """
     )
+    sys.stderr.write("[ERROR]: {}\n".format(sys.exc_info()[0]))
     sys.exit(1)
+
+n_records = config.pop("n_records", 40)
+for sample, ref in config["samples"].items():
+    try:
+        df = pd.read_csv(f"{ref}.fai", sep="\t", header=None)
+    except:
+        sys.stderr.write(f"[ERROR]: {ref}.fai must exist and be readable!\n")
+        sys.stderr.write("[ERROR]: {}\n".format(sys.exc_info()[0]))
+        sys.exit(1)
+
+    if df.shape[0] > 0 & df.shape[0] < n_records:
+        n_records = df.shape[0]
 
 
 scattergather:
@@ -56,28 +59,3 @@ include: "rules/RepeatMasker.smk"
 include: "rules/DupMasker.smk"
 include: "rules/trf.smk"
 include: "rules/windowmasker.smk"
-
-
-rule all:
-    input:
-        fasta=gather.fasta(
-            rules.split_fasta.output.fasta, sample=config["samples"].keys()
-        ),
-        trf=expand(rules.trf.output, sample=config["samples"].keys()),
-        RepeatMasker=expand(
-            rules.RepeatMasker.output, sample=config["samples"].keys()
-        ),
-        DupMasker=expand(rules.DupMasker.output, sample=config["samples"].keys()),
-        windowmasker=expand(
-            rules.windowmasker.output, sample=config["samples"].keys()
-        ),
-
-
-config = {
-    "samples": {
-        "test": "ref.fasta",
-        "test2": "ref2.fasta",
-        "test3": "ref3.fasta",
-        "test4": "ref4.fasta",
-    }
-}
