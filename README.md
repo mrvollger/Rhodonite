@@ -22,7 +22,7 @@ configfile: "config/config.yaml"
 
 module Rhodonite:
     snakefile:
-		https://github.com/mrvollger/Rhodonite/blob/master/workflow/Snakefile
+		https://github.com/mrvollger/Rhodonite/raw/master/workflow/Snakefile
     config:
         config
 
