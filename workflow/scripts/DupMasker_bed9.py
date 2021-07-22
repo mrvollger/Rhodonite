@@ -3,6 +3,7 @@
 # Author: Mitchell R. Vollger
 import argparse
 import pandas as pd
+import sys
 
 
 def hex_to_rgb(h):
@@ -15,7 +16,7 @@ if __name__ == "__main__":
         description="", formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     parser.add_argument("infile", help="input fasta file")
-    parser.add_argument("outfile", help="input fasta file")
+    parser.add_argument("--outfile", help="input fasta file", default=sys.stdout)
     args = parser.parse_args()
 
     color = pd.read_csv(args.infile, sep="\s+")
@@ -45,4 +46,4 @@ if __name__ == "__main__":
 
     out = out.rename(columns={"chr": "#chr"})
 
-    out.to_csv(args.outfile, sep="\t", index=False, compression="gzip")
+    out.to_csv(args.outfile, sep="\t", index=False)

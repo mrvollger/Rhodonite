@@ -103,5 +103,8 @@ rule DupMasker:
         head -n 1 {input.extra[0]} > {output.extra}
         tail -q -n+2 {input.extra} >> {output.extra}
 
-        {params.s_dir}/scripts/DupMasker_bed9.py {output.extra} {output.bed9}
+        {params.s_dir}/scripts/DupMasker_bed9.py {output.extra} \
+            | bedtools sort -header -g {input.fai} -i - \
+            | gzip -c \
+            > {output.bed9}
         """
