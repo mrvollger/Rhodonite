@@ -66,7 +66,7 @@ rule RepeatMasker:
         fai=lambda wc: f'{config[wc.sample]["ref"]}.fai',
     output:
         out="results/{sample}/RepeatMasker/RM.out",
-        bed="results/{sample}/RepeatMasker/RM.bed",
+        bed="results/{sample}/RepeatMasker/RM.bed.gz",
     threads: 1
     conda:
         "envs/env.yml"
@@ -86,5 +86,6 @@ rule RepeatMasker:
         cat {input.bed} \
             | bedtools sort \
                 -g {input.fai} -i - \
+            | gzip -c \
             > {output.bed}
         """

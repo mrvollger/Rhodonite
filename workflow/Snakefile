@@ -34,10 +34,12 @@ scattergather:
 include: "rules/split.smk"
 include: "rules/RepeatMasker.smk"
 include: "rules/DupMasker.smk"
+include: "rules/trf.smk"
 
 
 rule all:
     input:
         fasta=gather.fasta(rules.split_fasta.output.fasta, sample="test",),
+        trf=expand(rules.trf.output, sample="test"),
         RepeatMasker=expand(rules.RepeatMasker.output, sample="test"),
         DupMasker=expand(rules.DupMasker.output, sample="test"),
