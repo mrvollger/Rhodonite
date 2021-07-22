@@ -1,4 +1,4 @@
-# Rhodonite for repeat masking
+# Rhodonite: modular repeat masking
 
 [![Actions Status](https://github.com/mrvollger/Rhodonite/workflows/Linting/badge.svg)](https://github.com/mrvollger/Rhodonite/actions)
 [![Actions Status](https://github.com/mrvollger/Rhodonite/workflows/black/badge.svg)](https://github.com/mrvollger/Rhodonite/actions)
@@ -13,3 +13,35 @@
 ## Description
 
 This is a modular Snakemake for various repeat masking steps. The `Snakefile` is under `workflow`.
+
+## Loading in **Snakemake**
+
+```
+configfile: "config/config.yaml"
+
+
+module Rhodonite:
+    snakefile:
+		https://github.com/mrvollger/Rhodonite/blob/master/workflow/Snakefile
+    config:
+        config
+
+
+# use all rules from Rhodonite
+use rule * from Rhodonite
+```
+
+## Loading in **Python**
+
+Requires: [Snakedeploy](https://snakedeploy.readthedocs.io/en/latest/index.html)
+
+```
+from snakedeploy.deploy import deploy
+
+deploy("https://github.com/mrvollger/Rhodonite",
+		dest_path=".",
+		name="Rhodonite",
+		tag="master",
+		force=True
+	  )
+```
