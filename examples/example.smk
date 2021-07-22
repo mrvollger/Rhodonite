@@ -2,21 +2,20 @@ from snakemake.utils import min_version
 
 min_version("6.0")
 
-# define your configuration
+# define your configuration via python
+# or define a yaml e.g.
+# configfile: "config/config.yaml"
 config = {
     "samples": {
         "test": ".test/test.fa.gz",
         "test2": ".test/test.fa.gz",
     }
 }
-# or define a yaml e.g. see
-# configfile: "config/config.yaml"
 
 
 module Rhodonite:
     snakefile:
-        "../workflow/Snakefile"
-        #"https://github.com/mrvollger/Rhodonite/raw/master/workflow/Snakefile"
+        "https://github.com/mrvollger/Rhodonite/raw/master/workflow/Snakefile"
     config:
         config
 
