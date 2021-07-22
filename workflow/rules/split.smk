@@ -13,7 +13,7 @@ rule split_fasta:
     conda:
         "envs/env.yml"
     log:
-        "log/{sample}/fasta/split.log",
+        "logs/{sample}/fasta/split.log",
     params:
         s_dir=S_DIR,
     shell:
