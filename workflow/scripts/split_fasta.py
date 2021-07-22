@@ -3,6 +3,7 @@
 # Author: Mitchell R. Vollger
 import argparse
 import pysam
+import textwrap
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -12,19 +13,23 @@ if __name__ == "__main__":
     parser.add_argument(
         "--outputs", nargs="+", help="list of output files", required=True
     )
+    parser.add_argument(
+        "-w", "--width", help="width of fasta output", type=int, default=60
+    )
     args = parser.parse_args()
-    NIDS = len(args.outputs)
+    N_IDS = len(args.outputs)
 
     fasta = pysam.FastaFile(args.infile)
 
     outs = [open(f, "w+") for f in args.outputs]
-    outidx = 0
+    out_idx = 0
     for name in fasta.references:
         seq = fasta.fetch(name)
-        outs[outidx].write(">{}\n{}\n".format(name, seq))
-        outidx += 1
-        if outidx == NIDS:
-            outidx = 0
+        seq_fold = "\n".join(textwrap.wrap(seq, args.width)).strip()
+        outs[out_idx].write(">{}\n{}\n".format(name, seq_fold))
+        out_idx += 1
+        if out_idx == N_IDS:
+            out_idx = 0
 
     for out in outs:
         out.close()

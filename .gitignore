@@ -2,5 +2,6 @@
 .snakemake/**
 results/**
 logs/**
+log/**
 .snakemake/**
 **.code-workspace

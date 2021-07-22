@@ -1,18 +1,13 @@
 import os
 import sys
 import math
+import pandas as pd
 from snakemake.utils import min_version
 
 min_version("6.0")
 
-SDIR = os.path.realpath(os.path.dirname(srcdir("Snakefile")))
+S_DIR = os.path.realpath(os.path.dirname(srcdir("Snakefile")))
 shell.prefix(f"set -eo pipefail;")
-
-
-report: "report/workflow.rst"
-
-
-configfile: "config/config.yaml"
 
 
 TEMP_DIR = config.pop("tempdir", "temp")
@@ -28,34 +23,21 @@ if TEMP_DIR != "temp":
         shell("ln -s {TEMP_DIR} temp")
 
 
+df = pd.read_csv(config["test"]["ref"] + ".fai", sep="\t", header=None)
+n_records = df.shape[0]
+
+
+scattergather:
+    fasta=n_records,
+
+
+include: "rules/split.smk"
+include: "rules/RepeatMasker.smk"
+include: "rules/DupMasker.smk"
+
+
 rule all:
     input:
-        [],
-
-
-rule RepeatMasker:
-    input:
-        fasta="a.fasta",
-    output:
-        out="a.out",
-    resources:
-        mem=config.get("mem", 8),
-    threads: config.get("threads", 8)
-    conda:
-        "envs/env.yml"
-    log:
-        "rm.out.log",
-    params:
-        opts=config.get("RepeatMaskerOptions", "-s -xsamll -e ncbi"),
-        species=config.get("RepeatMaskerSpecies", "human"),
-    shell:
-        """
-        RepeatMasker \
-            -s \
-            -xsmall \
-            -e ncbi \
-            -species {params.species} \
-            -dir $(dirname {input.fasta}) \
-            -pa {threads} \
-            {input.fasta}  2> {log}
-        """
+        fasta=gather.fasta(rules.split_fasta.output.fasta, sample="test",),
+        RepeatMasker=expand(rules.RepeatMasker.output, sample="test"),
+        DupMasker=expand(rules.DupMasker.output, sample="test"),
