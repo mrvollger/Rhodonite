@@ -7,7 +7,7 @@ rule run_split_trf:
         mem=config.get("mem", 16),
     threads: 1
     conda:
-        "envs/env.yml"
+        "../envs/env.yml"
     log:
         "logs/{sample}/trf/{scatteritem}.log",
     params:
@@ -27,7 +27,7 @@ rule trf:
         bed="results/{sample}/trf/trf.bed.gz",
     threads: 1
     conda:
-        "envs/env.yml"
+        "../envs/env.yml"
     log:
         "logs/{sample}/trf.log",
     params:

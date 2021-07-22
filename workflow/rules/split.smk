@@ -11,7 +11,7 @@ rule split_fasta:
         mem=config.get("mem", 8),
     threads: 1
     conda:
-        "envs/env.yml"
+        "../envs/env.yml"
     log:
         "logs/{sample}/fasta/split.log",
     params:

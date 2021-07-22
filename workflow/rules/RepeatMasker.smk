@@ -15,7 +15,7 @@ rule run_split_RepeatMasker:
         mem=config.get("mem", 8),
     threads: config.get("threads", 8)
     conda:
-        "envs/env.yml"
+        "../envs/env.yml"
     log:
         "logs/{sample}/RepeatMasker/{scatteritem}.log",
     params:
@@ -49,7 +49,7 @@ rule make_RepeatMasker_bed:
             "results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.rm.bed"
         ),
     conda:
-        "envs/env.yml"
+        "../envs/env.yml"
     log:
         "logs/{sample}/RepeatMasker/{scatteritem}.bed.log",
     threads: 1
@@ -69,7 +69,7 @@ rule RepeatMasker:
         bed="results/{sample}/RepeatMasker/RM.bed.gz",
     threads: 1
     conda:
-        "envs/env.yml"
+        "../envs/env.yml"
     log:
         "logs/{sample}/RepeatMasker.log",
     shell:
