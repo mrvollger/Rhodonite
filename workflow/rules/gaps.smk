@@ -9,15 +9,10 @@ rule run_split_gaps:
     threads: 1
     conda:
         "../envs/env.yml"
-    params:
-        s_dir=S_DIR,
     log:
         "logs/{sample}/gaps/{scatteritem}.log",
-    shell:
-        """
-        python workflow/scripts/HardMaskToBed.py \
-            {input.fasta} > {output.bed} \
-        """
+    script:
+        "../scripts/HardMaskToBed.py"
 
 
 rule gaps:

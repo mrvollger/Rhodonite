@@ -18,14 +18,32 @@ rule dust_count:
         """
 
 
-rule windowmasker:
+rule run_windowmasker:
     input:
         counts=rules.dust_count.output.counts,
         ref=rules.unzip_fasta.output.fasta,
         fai=rules.unzip_fasta.output.fai,
     output:
-        intervals=temp("results/{sample}/windowmasker/dust.intervals"),
-        bed=temp("results/{sample}/windowmasker/dust.bed.gz"),
+        intervals=temp("temp/{sample}/windowmasker/dust.intervals"),
+    resources:
+        mem=config.get("mem", 16),
+    threads: 1
+    conda:
+        "../envs/env.yml"
+    log:
+        "logs/{sample}/windowmasker/intervals.log",
+    shell:
+        """
+        windowmasker -ustat {input.counts} -dust true -in {input.ref} \
+            -out {output.intervals} 
+        """
+
+
+rule run_windowmasker_bed:
+    input:
+        intervals=rules.run_windowmasker.output.intervals,
+    output:
+        bed=temp("temp/{sample}/windowmasker/dust.bed.gz"),
     resources:
         mem=config.get("mem", 16),
     threads: 1
@@ -33,15 +51,30 @@ rule windowmasker:
         "../envs/env.yml"
     log:
         "logs/{sample}/windowmasker/bed.log",
-    params:
-        s_dir=S_DIR,
+    script:
+        "../scripts/dust_to_bed.py"
+
+
+rule windowmasker:
+    input:
+        intervals=rules.run_windowmasker.output.intervals,
+        bed=rules.run_windowmasker_bed.output.bed,
+    output:
+        bed="results/{sample}/windowmasker/dust.bed.gz",
+        intervals="results/{sample}/windowmasker/dust.intervals",
+    resources:
+        mem=config.get("mem", 16),
+    threads: 1
+    conda:
+        "../envs/env.yml"
+    log:
+        "logs/{sample}/windowmasker/done.log",
     shell:
         """
-        windowmasker -ustat {input.counts} -dust true -in {input.ref} \
-            -out {output.intervals} 
+        cp {input.intervals} {output.intervals}
 
-        {params.s_dir}/scripts/dust_to_bed.py -i {output.intervals} \
+        cat {input.bed} \
             | bedtools sort -header -g {input.fai} -i - \
             | gzip -c \
-            > {output.bed} 
+        > {output.bed} 
         """

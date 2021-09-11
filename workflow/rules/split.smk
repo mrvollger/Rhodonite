@@ -14,12 +14,8 @@ rule split_fasta:
         "../envs/env.yml"
     log:
         "logs/{sample}/fasta/split.log",
-    params:
-        s_dir=S_DIR,
-    shell:
-        """
-        python workflow/scripts/split_fasta.py {input.fasta} -m 40 --outputs {output.fasta}
-        """
+    script:
+        "../scripts/split_fasta.py"
 
 
 rule unzip_fasta:

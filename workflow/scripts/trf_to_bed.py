@@ -10,9 +10,14 @@ if __name__ == "__main__":
         description="", formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     parser.add_argument(
-        "infiles", nargs="+", help="list of input .dat file(s) from trf"
+        "infiles",
+        nargs="+",
+        help="list of input .dat file(s) from trf",
+        default=snakemake.input.dat,
     )
-    parser.add_argument("-o", "--outfile", help="output bed file", default=sys.stdout)
+    parser.add_argument(
+        "-o", "--outfile", help="output bed file", default=snakemake.output.bed
+    )
     args = parser.parse_args()
 
     trf = []

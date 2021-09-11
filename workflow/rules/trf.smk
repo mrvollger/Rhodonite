@@ -18,8 +18,23 @@ rule run_split_trf:
         """
 
 
+rule trf_bed:
+    input:
+        dat=gather.fasta(rules.run_split_trf.output.dat, allow_missing=True),
+    output:
+        bed=temp("temp/{sample}/trf/trf.bed"),
+    threads: 1
+    conda:
+        "../envs/env.yml"
+    log:
+        "logs/{sample}/trf.log",
+    script:
+        "../scripts/trf_to_bed.py"
+
+
 rule trf:
     input:
+        bed=rules.trf_bed.output.bed,
         dat=gather.fasta(rules.run_split_trf.output.dat, allow_missing=True),
         fai=lambda wc: f'{config["samples"][wc.sample]}.fai',
     output:
@@ -35,8 +50,7 @@ rule trf:
     shell:
         """
         cat {input.dat} > {output.dat}
-
-        {params.s_dir}/scripts/trf_to_bed.py {input.dat} \
+        cat {input.bed} \
             | bedtools sort -header -g {input.fai} -i - \
             | gzip -c \
             > {output.bed}

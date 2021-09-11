@@ -9,9 +9,14 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="", formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
-    parser.add_argument("infile", help="input fasta file")
     parser.add_argument(
-        "--outputs", nargs="+", help="list of output files", required=True
+        "infile", help="input fasta file", default=snakemake.input.fasta
+    )
+    parser.add_argument(
+        "--outputs",
+        nargs="+",
+        help="list of output files",
+        default=snakemake.output.fasta,
     )
     parser.add_argument(
         "-w", "--width", help="width of fasta output", type=int, default=60
@@ -26,7 +31,7 @@ if __name__ == "__main__":
         "-m",
         "--maxheader",
         help="Set a maximum header length for the input fasta",
-        default=None,
+        default=40,
         type=int,
     )
 

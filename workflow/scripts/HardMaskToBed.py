@@ -40,7 +40,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="", formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
-    parser.add_argument("infile", help="positional input")
+    parser.add_argument(
+        "infile", help="positional input", default=snakemake.input.fasta
+    )
+    parser.add_argument(
+        "outfile", help="positional output bed", default=snakemake.output.bed
+    )
     parser.add_argument(
         "-s",
         "--soft",
@@ -58,15 +63,15 @@ if __name__ == "__main__":
     refs = fasta.references
     fasta.close()
     # sys.stderr.write(f"{refs}\n")
-
+    out_bed = open(args.outfile, "w+")
     with multiprocessing.Pool(args.threads) as pool:
         fetch_seq_extra = partial(fetch_seq, fasta=args.infile, soft=args.soft)
         for i, rtn in enumerate(pool.imap(fetch_seq_extra, refs)):
             contig, intervals = rtn
             for start, end in intervals:
-                print(f"{contig}\t{start}\t{end}")
+                out_bed.write(f"{contig}\t{start}\t{end}\n")
             sys.stderr.write(f"{contig} done\n")
-
+    out_bed.close()
     # for NotADirectoryError in fasta:
     # sys.stderr.write(f"{rec.name}\n")
     old = """
