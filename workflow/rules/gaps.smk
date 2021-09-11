@@ -10,12 +10,12 @@ rule run_split_gaps:
     conda:
         "../envs/env.yml"
     params:
-        sdir=S_DIR,
+        s_dir=S_DIR,
     log:
         "logs/{sample}/gaps/{scatteritem}.log",
     shell:
         """
-        {params.sdir}/scripts/HardMaskToBed.py {input.fasta} > {output.bed} \
+        {params.s_dir}/scripts/HardMaskToBed.py {input.fasta} > {output.bed} \
         """
 
 
