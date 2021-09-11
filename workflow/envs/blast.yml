@@ -8,3 +8,4 @@ dependencies:
   - pysam
   - pandas
   - samtools=1.13
+  - openssl
