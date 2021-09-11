@@ -59,6 +59,7 @@ rule windowmasker:
     input:
         intervals=rules.run_windowmasker.output.intervals,
         bed=rules.run_windowmasker_bed.output.bed,
+        fai=lambda wc: f'{config["samples"][wc.sample]}.fai',
     output:
         bed="results/{sample}/windowmasker/dust.bed.gz",
         intervals="results/{sample}/windowmasker/dust.intervals",
