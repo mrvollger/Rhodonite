@@ -41,10 +41,10 @@ if __name__ == "__main__":
         description="", formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     parser.add_argument(
-        "infile", help="positional input", default=snakemake.input.fasta
+        "--infile", help="positional input", default=snakemake.input.fasta
     )
     parser.add_argument(
-        "outfile", help="positional output bed", default=snakemake.output.bed
+        "--outfile", help="positional output bed", default=snakemake.output.bed
     )
     parser.add_argument(
         "-s",
