@@ -5,3 +5,4 @@ logs/**
 log/**
 .snakemake/**
 **.code-workspace
+williams_fastcn/**
