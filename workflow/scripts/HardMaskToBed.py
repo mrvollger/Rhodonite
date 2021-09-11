@@ -69,11 +69,10 @@ if __name__ == "__main__":
     fetch_seq_extra = partial(fetch_seq, fasta=args.infile, soft=args.soft)
     # for i, rtn in enumerate(pool.imap(fetch_seq_extra, refs)):
     for ref in refs:
-        for i, rtn in enumerate(fetch_seq_extra(ref)):
-            contig, intervals = rtn
-            for start, end in intervals:
-                out_bed.write(f"{contig}\t{start}\t{end}\n")
-            sys.stderr.write(f"{contig} done\n")
+        contig, intervals = fetch_seq_extra(ref)
+        for start, end in intervals:
+            out_bed.write(f"{contig}\t{start}\t{end}\n")
+        sys.stderr.write(f"{contig} done\n")
     out_bed.close()
     # for NotADirectoryError in fasta:
     # sys.stderr.write(f"{rec.name}\n")
