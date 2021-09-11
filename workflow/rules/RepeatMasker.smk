@@ -74,9 +74,8 @@ rule RepeatMasker:
         "logs/{sample}/RepeatMasker.log",
     shell:
         """
-        cat {input.out} \
-            | grep -v "^There" \
-            | head -n 3\
+        grep -v "^There" {input.out} \
+            | head -n 3 \
             > {output.out}
         tail -q -n +4 {input.out} \
             | grep -v "^There" \
