@@ -15,7 +15,7 @@ rule run_split_gaps:
         "logs/{sample}/gaps/{scatteritem}.log",
     shell:
         """
-        {sdir}/scripts/HardMaskToBed.py {input.fasta} > {output.bed} \
+        {params.sdir}/scripts/HardMaskToBed.py {input.fasta} > {output.bed} \
         """
 
 
