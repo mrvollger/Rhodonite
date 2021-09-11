@@ -10,7 +10,7 @@ if __name__ == "__main__":
         description="", formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     parser.add_argument(
-        "infile", help="input fasta file", default=snakemake.input.fasta
+        "--infile", help="input fasta file", default=snakemake.input.fasta
     )
     parser.add_argument(
         "--outputs",
