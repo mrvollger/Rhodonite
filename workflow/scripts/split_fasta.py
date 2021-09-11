@@ -5,7 +5,6 @@ import argparse
 import pysam
 import textwrap
 
-print(snakemake.input)
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="", formatter_class=argparse.ArgumentDefaultsHelpFormatter
