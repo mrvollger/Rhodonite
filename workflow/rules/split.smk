@@ -18,7 +18,7 @@ rule split_fasta:
         s_dir=S_DIR,
     shell:
         """
-        {params.s_dir}/scripts/split_fasta.py {input.fasta} -m 40 --outputs {output.fasta}
+        workflow/scripts/split_fasta.py {input.fasta} -m 40 --outputs {output.fasta}
         """
 
 
