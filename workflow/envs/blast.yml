@@ -7,3 +7,4 @@ dependencies:
   - blast=2.12.0
   - pysam
   - pandas
+  - samtools=1.13
