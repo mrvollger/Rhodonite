@@ -10,7 +10,7 @@ if __name__ == "__main__":
         description="", formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     parser.add_argument(
-        "infiles",
+        "--infiles",
         nargs="+",
         help="list of input .dat file(s) from trf",
         default=snakemake.input.dat,
