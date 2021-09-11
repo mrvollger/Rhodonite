@@ -15,7 +15,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--outputs",
         nargs="+",
-        help="list of output files",
+        help="list of output files.",
         default=snakemake.output.fasta,
     )
     parser.add_argument(
