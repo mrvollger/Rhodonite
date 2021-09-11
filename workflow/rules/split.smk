@@ -33,6 +33,6 @@ rule unzip_fasta:
         "logs/{sample}/fasta/unzip.log",
     shell:
         """
-        gunzip -c {input.fasta} | seqtk seq -l 60 > {output.fasta}
+        seqtk seq -l 60 {input.fasta} > {output.fasta}
         samtools faidx {output.fasta}
         """
