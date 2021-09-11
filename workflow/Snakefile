@@ -54,8 +54,10 @@ scattergather:
     fasta=n_records,
 
 
+# rules for each program
 include: "rules/split.smk"
 include: "rules/RepeatMasker.smk"
 include: "rules/DupMasker.smk"
 include: "rules/trf.smk"
 include: "rules/windowmasker.smk"
+include: "rules/gaps.smk"
