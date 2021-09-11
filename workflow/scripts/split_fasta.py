@@ -57,8 +57,14 @@ if __name__ == "__main__":
                 f"fasta header {name} is longer than {args.maxheader}. Please change your headers to be shorter than {args.maxheader} characters. (https://github.com/rmhubley/RepeatMasker/issues/59)"
             )
 
-        seq_fold = "\n".join(textwrap.wrap(seq, args.width)).strip()
-        outs[out_idx].write(">{}\n{}\n".format(name, seq_fold))
+        outs[out_idx].write(">{}\n".format(name))
+        for start in range(0, len(seq), args.width):
+            if start + args.width > len(seq):
+                end = len(seq)
+            else:
+                end = start + args.width
+            outs[out_idx].write(f"{seq[start:end]}\n")
+
         out_idx += 1
         if out_idx == N_IDS:
             out_idx = 0
