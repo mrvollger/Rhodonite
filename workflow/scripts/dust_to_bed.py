@@ -16,7 +16,7 @@ parser.add_argument("-o", "--outbed", default=snakemake.output.bed)
 args = parser.parse_args()
 
 outfile = open(args.outbed, "w+")
-for line in args.sddustFile.open():
+for line in open(args.sddustFile):
     line = line.rstrip()
     if line[0] == ">":
         name = line[1:]
