@@ -4,8 +4,9 @@ import os
 import sys
 import pysam
 from numba import njit
-import multiprocessing
 from functools import partial
+
+# import multiprocessing
 
 
 @njit
@@ -64,9 +65,11 @@ if __name__ == "__main__":
     fasta.close()
     # sys.stderr.write(f"{refs}\n")
     out_bed = open(args.outfile, "w+")
-    with multiprocessing.Pool(args.threads) as pool:
-        fetch_seq_extra = partial(fetch_seq, fasta=args.infile, soft=args.soft)
-        for i, rtn in enumerate(pool.imap(fetch_seq_extra, refs)):
+    # with multiprocessing.Pool(args.threads) as pool:
+    fetch_seq_extra = partial(fetch_seq, fasta=args.infile, soft=args.soft)
+    # for i, rtn in enumerate(pool.imap(fetch_seq_extra, refs)):
+    for ref in refs:
+        for i, rtn in enumerate(fetch_seq_extra(ref)):
             contig, intervals = rtn
             for start, end in intervals:
                 out_bed.write(f"{contig}\t{start}\t{end}\n")
