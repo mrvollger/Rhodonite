@@ -1,5 +1,5 @@
 # Rhodonite: modular repeat masking
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5501705.svg)](https://doi.org/10.5281/zenodo.5501705)
+[![DOI](https://zenodo.org/badge/388233694.svg)](https://zenodo.org/badge/latestdoi/388233694)
 [![Actions Status](https://github.com/mrvollger/Rhodonite/workflows/Linting/badge.svg)](https://github.com/mrvollger/Rhodonite/actions)
 [![Actions Status](https://github.com/mrvollger/Rhodonite/workflows/black/badge.svg)](https://github.com/mrvollger/Rhodonite/actions)
 
