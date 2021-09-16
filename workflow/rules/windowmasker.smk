@@ -7,7 +7,7 @@ rule dust_count:
         mem=config.get("mem", 16),
     threads: 1
     conda:
-        "../envs/env.yml"
+        "../envs/blast.yml"
     log:
         "logs/{sample}/windowmasker/dust_count.log",
     params:
@@ -29,7 +29,7 @@ rule run_windowmasker:
         mem=config.get("mem", 16),
     threads: 1
     conda:
-        "../envs/env.yml"
+        "../envs/blast.yml"
     log:
         "logs/{sample}/windowmasker/intervals.log",
     shell:
