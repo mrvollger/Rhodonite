@@ -18,8 +18,8 @@ rule run_DupMasker_step_1:
         s_dir=S_DIR,
     shell:
         """
-        ln -s {params.s_dir}/Libs/Libraries/dupliconlib.fa \
-            $(dirname $(realpath $(which RepeatMasker)))/Libraries/. \
+        ln -s {params.s_dir}/scripts/Libs/Libraries/dupliconlib.fa \
+            $(dirname $(realpath $(which DupMasker)))/Libraries/. \
             || echo "duplicon lib already in place"
 
         {params.s_dir}/scripts/DupMaskerParallel \
@@ -55,6 +55,10 @@ rule run_DupMasker_step_2:
         s_dir=S_DIR,
     shell:
         """
+        ln -s {params.s_dir}/scripts/Libs/Libraries/dupliconlib.fa \
+            $(dirname $(realpath $(which DupMasker)))/Libraries/. \
+            || echo "duplicon lib already in place"
+
         DupMasker \
             -engine ncbi \
             {input.fasta}
