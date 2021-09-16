@@ -74,17 +74,9 @@ rule RepeatMasker:
         "logs/{sample}/RepeatMasker.log",
     shell:
         """
-        grep -v "^There" {input.out} \
-            | head -n 3 \
-            > {output.out}
-        tail -q -n +4 {input.out} \
-            | grep -v "^There" \
-            >> {output.out}
+        grep -v "^There" {input.out} | head -n 3 > {output.out}
 
+        tail -q -n +4 {input.out} | grep -v "^There" >> {output.out}
 
-        cat {input.bed} \
-            | bedtools sort \
-                -g {input.fai} -i - \
-            | gzip -c \
-            > {output.bed}
+        cat {input.bed} | bedtools sort -g {input.fai} -i - | gzip > {output.bed}
         """
