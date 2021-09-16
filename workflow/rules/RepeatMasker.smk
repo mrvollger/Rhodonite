@@ -78,6 +78,7 @@ rule RepeatMasker:
         grep -v "^There" {input.out} | head -n 3 > {output.out}
         tail -q -n +4 {input.out} | grep -v "^There" >> {output.out}
 
+        echo "made .out for RepeatMasker"
         set -o pipefail
         cat {input.bed} | bedtools sort -g {input.fai} -i - | gzip > {output.bed}
         """
