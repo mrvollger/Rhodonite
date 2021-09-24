@@ -10,6 +10,8 @@ rule run_split_trf:
         "../envs/env.yml"
     log:
         "logs/{sample}/trf/{scatteritem}.log",
+    resources:
+        mem=config.get("mem", 8),
     params:
         trf_opts=config.get("trf_opts", "2 7 7 80 10 50 15 -l 25"),
     shell:
@@ -24,6 +26,8 @@ rule trf_bed:
     output:
         bed=temp("temp/{sample}/trf/trf.bed"),
     threads: 1
+    resources:
+        mem=config.get("mem", 8),
     conda:
         "../envs/env.yml"
     log:
@@ -41,6 +45,8 @@ rule trf:
         dat="results/{sample}/trf/trf.dat",
         bed="results/{sample}/trf/trf.bed.gz",
     threads: 1
+    resources:
+        mem=config.get("mem", 8),
     conda:
         "../envs/env.yml"
     log:

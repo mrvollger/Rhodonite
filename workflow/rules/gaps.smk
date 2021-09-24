@@ -21,6 +21,8 @@ rule gaps:
         fai=lambda wc: f'{config["samples"][wc.sample]}.fai',
     output:
         bed="results/{sample}/gaps/gaps.bed.gz",
+    resources:
+        mem=config.get("mem", 8),
     threads: 1
     conda:
         "../envs/env.yml"

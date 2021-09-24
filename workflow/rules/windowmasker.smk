@@ -11,7 +11,8 @@ rule dust_count:
     log:
         "logs/{sample}/windowmasker/dust_count.log",
     params:
-        mem=(config.get("mem", 16) - 2) * 1000,
+        mem=config.get("mem", 16),
+        mem_mb=(config.get("mem", 16) - 2) * 1000,
     shell:
         """
         windowmasker -mem {params.mem} -mk_counts -in {input.ref} -out {output.counts}  

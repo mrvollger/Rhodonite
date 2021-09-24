@@ -48,6 +48,8 @@ rule make_RepeatMasker_bed:
         bed=temp(
             "results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.rm.bed"
         ),
+    resources:
+        mem=config.get("mem", 8),
     conda:
         "../envs/env.yml"
     log:
@@ -67,6 +69,8 @@ rule RepeatMasker:
     output:
         out="results/{sample}/RepeatMasker/RM.out",
         bed="results/{sample}/RepeatMasker/RM.bed.gz",
+    resources:
+        mem=config.get("mem", 8),
     threads: 1
     conda:
         "../envs/env.yml"
