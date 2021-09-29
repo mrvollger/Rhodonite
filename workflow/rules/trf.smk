@@ -51,8 +51,6 @@ rule trf:
         "../envs/env.yml"
     log:
         "logs/{sample}/trf.log",
-    params:
-        s_dir=S_DIR,
     shell:
         """
         cat {input.dat} > {output.dat}
