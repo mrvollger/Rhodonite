@@ -58,7 +58,7 @@ rule run_DupMasker_step_2:
     shell:
         """
         ln -s {params.libs} \
-            $(dirname $(realpath $(which DupMasker)))/Libraries/. \
+            $(dirname $(realpath $(which DupMasker)))/Libraries/dupliconlib.fa \
             || echo "duplicon lib already in place"
 
         DupMasker \
