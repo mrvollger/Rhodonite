@@ -15,14 +15,15 @@ rule run_DupMasker_step_1:
     log:
         "logs/{sample}/RepeatMasker/dup_masker_1.{scatteritem}.log",
     params:
-        s_dir=S_DIR,
+        dupmasker=workflow.source_path("../scripts/DupMaskerParallel"),
+        libs=workflow.source_path("../scripts/Libs/Libraries/dupliconlib.fa"),
     shell:
         """
-        ln -s {params.s_dir}/scripts/Libs/Libraries/dupliconlib.fa \
+        ln -s {params.libs} \
             $(dirname $(realpath $(which DupMasker)))/Libraries/. \
             || echo "duplicon lib already in place"
 
-        {params.s_dir}/scripts/DupMaskerParallel \
+        {params.dupmasker} \
             -pa {threads} \
             -dupout \
             -engine ncbi \
@@ -34,6 +35,7 @@ rule run_DupMasker_step_2:
     input:
         fasta=rules.run_split_RepeatMasker.input.fasta,
         out=rules.run_split_RepeatMasker.output.out,
+        #dup=rules.run_DupMasker_step_1.output.dup,
     output:
         dup=temp(
             "results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.duplicons"
@@ -52,10 +54,10 @@ rule run_DupMasker_step_2:
     log:
         "logs/{sample}/RepeatMasker/dup_masker_2.{scatteritem}.log",
     params:
-        s_dir=S_DIR,
+        libs=workflow.source_path("../scripts/Libs/Libraries/dupliconlib.fa"),
     shell:
         """
-        ln -s {params.s_dir}/scripts/Libs/Libraries/dupliconlib.fa \
+        ln -s {params.libs} \
             $(dirname $(realpath $(which DupMasker)))/Libraries/. \
             || echo "duplicon lib already in place"
 
@@ -81,10 +83,14 @@ rule run_DupMasker_step_3:
     log:
         "logs/{sample}/RepeatMasker/dup_masker_3.{scatteritem}.log",
     params:
-        s_dir=S_DIR,
+        DupMask_parserV6=workflow.source_path("../scripts/DupMask_parserV6.pl"),
+        colors=workflow.source_path(
+            "../scripts/DupMask_parserV6/r.all.repeat.10K.nr.Color"
+        ),
+        chrs=workflow.source_path("../scripts/DupMask_parserV6/bd35ChrSize"),
     shell:
         """
-        {params.s_dir}/scripts/DupMask_parserV6.pl -i {input.dup} -E -o {output.extra}
+        perl {params.DupMask_parserV6} -c {params.colors} -L {params.chrs} -i {input.dup} -E -o {output.extra}
         """
 
 
@@ -105,13 +111,13 @@ rule DupMasker:
     log:
         "logs/{sample}/RepeatMasker/DupMasker.log",
     params:
-        s_dir=S_DIR,
+        DupMasker_bed9=workflow.source_path("../scripts/DupMasker_bed9.py"),
     shell:
         """
         head -n 1 {input.extra[0]} > {output.extra}
         tail -q -n+2 {input.extra} >> {output.extra}
 
-        {params.s_dir}/scripts/DupMasker_bed9.py {output.extra} \
+        python {params.DupMasker_bed9} {output.extra} \
             | bedtools sort -header -g {input.fai} -i - \
             | gzip -c \
             > {output.bed}
