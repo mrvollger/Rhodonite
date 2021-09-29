@@ -33,9 +33,9 @@ rule run_DupMasker_step_1:
 
 rule run_DupMasker_step_2:
     input:
+        #dup=rules.run_DupMasker_step_1.output.dup,
         fasta=rules.run_split_RepeatMasker.input.fasta,
         out=rules.run_split_RepeatMasker.output.out,
-        #dup=rules.run_DupMasker_step_1.output.dup,
     output:
         dup=temp(
             "results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.duplicons"
