@@ -15,7 +15,8 @@ config = {
 
 module Rhodonite:
     snakefile:
-        "https://github.com/mrvollger/Rhodonite/raw/master/workflow/Snakefile"
+        "https://github.com/mrvollger/Rhodonite/raw/v0.3-alpha/workflow/Snakefile"
+        #github("mrvollger/Rhodonite", path="workflow/Snakefile", tag="v0.3-alpha")
     config:
         config
 
@@ -28,7 +29,7 @@ use rule * from Rhodonite as Rhodonite_*
 use rule RepeatMasker from Rhodonite as Rhodonite_RepeatMasker with:
     output:
         # You rename the output to anything you want
-        # but maintain the order and keep "{sample}" in the name.
+        # but maintain the order and keep "{sample}" in the name and the (.gz).
         # Every rule will have the standard output of the program
         # and a bed output that is sorted in the order of the ref.
         out="{sample}.rm.out",
