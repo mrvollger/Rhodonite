@@ -32,7 +32,7 @@ rule run_split_dna_brnn:
         bed=temp("results/{sample}/dna-brnn/{scatteritem}.bed"),
     resources:
         mem=config.get("mem", 8),
-    threads: config.get("threads", 8)
+    threads: config.get("threads", 2)
     conda:
         "../envs/env.yml"
     log:
