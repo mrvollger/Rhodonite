@@ -37,8 +37,6 @@ rule run_split_dna_brnn:
         "../envs/env.yml"
     log:
         "logs/{sample}/dna-brnn/{scatteritem}.log",
-    params:
-        dna_brnn=workflow.source_path("../scripts/dna-brnn"),
     shell:
         """
         {input.dna_brnn} \
