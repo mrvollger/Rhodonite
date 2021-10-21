@@ -2,8 +2,6 @@ rule make_dna_brnn:
     output:
         dna_brnn="temp/dna-nn/dna-brnn",
         model="temp/dna-nn/models/attcc-alpha.knm",
-    shadow:
-        "shallow"
     resources:
         mem=1,
     threads: 1
@@ -66,5 +64,5 @@ rule dna_brnn:
         "logs/{sample}/dna-brnn.log",
     shell:
         """
-        cat {input.bed} | bedtools sort -g {input.fai} -i - | gzip > {output.bed}
+        cat {input.bed} | bedtools sort -g {input.fai} -i - | bgzip > {output.bed}
         """

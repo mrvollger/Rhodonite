@@ -10,6 +10,7 @@
 - [![Actions Status](https://github.com/mrvollger/Rhodonite/workflows/trf/badge.svg)](https://github.com/mrvollger/Rhodonite/actions)
 - [![Actions Status](https://github.com/mrvollger/Rhodonite/workflows/windowmasker/badge.svg)](https://github.com/mrvollger/Rhodonite/actions)
 - [![Actions Status](https://github.com/mrvollger/Rhodonite/workflows/DupMasker/badge.svg)](https://github.com/mrvollger/Rhodonite/actions)
+- [![Actions Status](https://github.com/mrvollger/Rhodonite/workflows/dna-brnn/badge.svg)](https://github.com/mrvollger/dna-brnn/actions)
 
 ## Description
 

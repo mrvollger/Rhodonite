@@ -15,8 +15,8 @@ config = {
 
 module Rhodonite:
     snakefile:
-        "https://github.com/mrvollger/Rhodonite/raw/v0.3-alpha/workflow/Snakefile"
         #github("mrvollger/Rhodonite", path="workflow/Snakefile", tag="v0.3-alpha")
+        "https://github.com/mrvollger/Rhodonite/raw/v0.3-alpha/workflow/Snakefile"
     config:
         config
 
