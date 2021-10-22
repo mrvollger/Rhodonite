@@ -46,7 +46,7 @@ for sample, ref in config["samples"].items():
         sys.stderr.write("[ERROR]: {}\n".format(sys.exc_info()[0]))
         sys.exit(1)
 
-    if df.shape[0] > 0 & df.shape[0] < n_records:
+    if df.shape[0] > 0 and df.shape[0] < n_records:
         n_records = df.shape[0]
 
 
