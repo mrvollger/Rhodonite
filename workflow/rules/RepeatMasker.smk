@@ -1,5 +1,24 @@
+# this rule is required so that mutliple repeatmasker setup rules will not try and run at once.
+rule setup_RepeatMasker:
+    output:
+        build=temp("results/{sample}/RepeatMasker/software.built.txt"),
+    resources:
+        mem=config.get("mem", 8),
+    threads: config.get("threads", 8)
+    conda:
+        "../envs/env.yml"
+    log:
+        "logs/{sample}/RepeatMasker/build.log",
+    shell:
+        """
+        touch {output.build}
+        RepeatMasker {output.build} 2> {log}
+        """
+
+
 rule run_split_RepeatMasker:
     input:
+        build=rules.setup_RepeatMasker.output.build,
         fasta="results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa",
     output:
         msk=temp("results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.masked"),
