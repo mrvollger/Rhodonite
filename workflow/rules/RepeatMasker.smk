@@ -2,9 +2,7 @@ rule run_split_RepeatMasker:
     input:
         fasta="results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa",
     output:
-        msk=temp(
-            "results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.masked"
-        ),
+        msk=temp("results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.masked"),
         out=temp("results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.out"),
         cat=temp("results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.cat"),
         cat_all=temp(
@@ -45,9 +43,7 @@ rule make_RepeatMasker_bed:
     input:
         out=rules.run_split_RepeatMasker.output.out,
     output:
-        bed=temp(
-            "results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.rm.bed"
-        ),
+        bed=temp("results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.rm.bed"),
     resources:
         mem=config.get("mem", 8),
     conda:
