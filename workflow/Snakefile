@@ -37,7 +37,7 @@ samples:
     sys.stderr.write("[ERROR]: {}\n".format(sys.exc_info()[0]))
     sys.exit(1)
 
-n_records = config.pop("n_records", 40)
+n_records = config.pop("n_records", 200)
 for sample, ref in config["samples"].items():
     try:
         df = pd.read_csv(f"{ref}.fai", sep="\t", header=None)
