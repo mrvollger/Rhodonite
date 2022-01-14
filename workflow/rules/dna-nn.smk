@@ -53,6 +53,7 @@ rule dna_brnn:
         fai=lambda wc: f'{config["samples"][wc.sample]}.fai',
     output:
         bed="results/{sample}/dna-brnn/dna-brnn.bed.gz",
+        bed9="results/{sample}/dna-brnn/dna-brnn.bed9.gz",
     resources:
         mem=config.get("mem", 8),
     threads: 1
@@ -60,7 +61,19 @@ rule dna_brnn:
         "../envs/env.yml"
     log:
         "logs/{sample}/dna-brnn.log",
+    params:
+        red="255,0,0",
+        blue="0,0,255",
     shell:
         """
         cat {input.bed} | bedtools sort -g {input.fai} -i - | bgzip > {output.bed}
+
+        ( 
+            printf '#ct\\tst\\ten\\tname\\tscore\\tstrand\\ttst\\tten\\tcolor\\n'; \
+            bgzip -dc {output.bed} \
+                | sed 's/2$/{params.red}/g' \
+                | sed 's/1$/{params.blue}/g' \
+                | awk -v OFS=$'\\t' '{{print $1,$2,$3,"n","score",".",$2,$3,$4 }}' \
+        ) \
+            | gzip -c > {output.bed9}
         """
