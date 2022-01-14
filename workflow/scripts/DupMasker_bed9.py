@@ -29,6 +29,8 @@ if __name__ == "__main__":
 
     color["rgb"] = color["color"].map(hex_to_rgb)
     color["score"] = 0
+    color["tst"] = color["chrStart"]
+    color["ten"] = color["chrEnd"]
 
     out = color[
         [
@@ -38,12 +40,20 @@ if __name__ == "__main__":
             "Repeat",
             "score",
             "strand",
-            "chrStart",
-            "chrEnd",
+            "tst",
+            "ten",
             "rgb",
         ]
     ]
-
-    out = out.rename(columns={"chr": "#chr"})
+    ##ct     st      en      name    score   strand  tst     ten     color
+    out = out.rename(
+        columns={
+            "chr": "#ct",
+            "chrStart": "st",
+            "chrEnd": "en",
+            "Repeat": "name",
+            "rgb": "color",
+        }
+    )
 
     out.to_csv(args.outfile, sep="\t", index=False)
