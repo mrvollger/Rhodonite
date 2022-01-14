@@ -31,9 +31,30 @@ rule run_DupMasker_step_1:
         """
 
 
+rule setup_DupMasker:
+    output:
+        ready=temp("results/{sample}/RepeatMasker/DupMasker_ready.txt"),
+    resources:
+        mem=1,
+    threads: 1
+    conda:
+        "../envs/env.yml"
+    log:
+        "logs/{sample}/RepeatMasker/dup_masker_setup.log",
+    params:
+        libs=workflow.source_path("../scripts/Libs/Libraries/dupliconlib.fa"),
+    shell:
+        """
+        cp -n {params.libs} \
+            $(dirname $(realpath $(which DupMasker)))/Libraries/dupliconlib.fa \
+            || echo "duplicon lib already in place"
+        touch {output}
+        """
+
+
 rule run_DupMasker_step_2:
     input:
-        #dup=rules.run_DupMasker_step_1.output.dup,
+        ready=rules.setup_DupMasker.output.ready,
         fasta=rules.run_split_RepeatMasker.input.fasta,
         out=rules.run_split_RepeatMasker.output.out,
     output:
@@ -53,14 +74,8 @@ rule run_DupMasker_step_2:
         "../envs/env.yml"
     log:
         "logs/{sample}/RepeatMasker/dup_masker_2.{scatteritem}.log",
-    params:
-        libs=workflow.source_path("../scripts/Libs/Libraries/dupliconlib.fa"),
     shell:
         """
-        ln -s {params.libs} \
-            $(dirname $(realpath $(which DupMasker)))/Libraries/dupliconlib.fa \
-            || echo "duplicon lib already in place"
-
         DupMasker \
             -engine ncbi \
             {input.fasta}
