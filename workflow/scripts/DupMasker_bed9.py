@@ -30,7 +30,9 @@ if __name__ == "__main__":
     }
     color = pd.read_csv(args.infile, sep="\t", dtype=d_types)
     # these rows are no good, they come from contigs that have messed up results. fix TODO
-    bad = (color["chr"] == "0") & (color["chrEnd"] == "#BEBEBE")
+    bad = ((color["chr"] == "0") & (color["chrEnd"] == "#BEBEBE")) | (
+        color["chrStart"] == 0 & color["chrEnd"] == 0
+    )
     color.drop(color[bad].index, inplace=True)
 
     color["strand"] = "+"
