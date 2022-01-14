@@ -19,7 +19,16 @@ if __name__ == "__main__":
     parser.add_argument("--outfile", help="input fasta file", default=sys.stdout)
     args = parser.parse_args()
 
-    color = pd.read_csv(args.infile, sep="\s+")
+    # chr     chrStart        chrEnd  orient  Repeat  color   width   offset
+    d_types = {
+        "chr": str,
+        "chrStart": "Int64",
+        "chrEnd": "Int64",
+        "offset": "Int64",
+        "width": "Int64",
+        "color": str,
+    }
+    color = pd.read_csv(args.infile, sep="\t", dtype=d_types)
     # these rows are no good, they come from contigs that have messed up results. fix TODO
     bad = (color["chr"] == "0") & (color["chrEnd"] == "#BEBEBE")
     color.drop(color[bad].index, inplace=True)
