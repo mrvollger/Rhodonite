@@ -54,6 +54,10 @@ scattergather:
     fasta=n_records,
 
 
+wildcard_constraints:
+    sample="|".join(list(config["samples"].keys())),
+
+
 # rules for each program
 include: "rules/split.smk"
 include: "rules/RepeatMasker.smk"
