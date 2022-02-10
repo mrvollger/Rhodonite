@@ -10,6 +10,10 @@ rule test:
             rules.split_fasta.output.fasta, sample=config["samples"].keys()
         ),
         trf=expand(rules.trf.output, sample=config["samples"].keys()),
-        RepeatMasker=expand(rules.RepeatMasker.output, sample=config["samples"].keys()),
+        RepeatMasker=expand(
+            rules.RepeatMasker.output, sample=config["samples"].keys()
+        ),
         DupMasker=expand(rules.DupMasker.output, sample=config["samples"].keys()),
-        windowmasker=expand(rules.windowmasker.output, sample=config["samples"].keys()),
+        windowmasker=expand(
+            rules.windowmasker.output, sample=config["samples"].keys()
+        ),

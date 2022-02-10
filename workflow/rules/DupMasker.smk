@@ -111,7 +111,9 @@ rule run_DupMasker_step_3:
 
 rule DupMasker:
     input:
-        extra=gather.fasta(rules.run_DupMasker_step_3.output.extra, allow_missing=True),
+        extra=gather.fasta(
+            rules.run_DupMasker_step_3.output.extra, allow_missing=True
+        ),
         fai=lambda wc: f'{config["samples"][wc.sample]}.fai',
     output:
         extra="results/{sample}/RepeatMasker/duplicons.extra",
