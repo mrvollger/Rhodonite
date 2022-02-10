@@ -35,7 +35,7 @@ rule run_split_trf:
     resources:
         mem=config.get("mem", 8),  # 8GB of ram is not enough for human with 2000
     params:
-        trf_opts=config.get("trf_opts", "2 5 7 80 10 50 500 -l 50"),
+        trf_opts=config.get("trf_opts", "2 5 7 80 10 50 500 -l 25"),
     shell:
         """
         trf {input.fasta} {params.trf_opts} -h -ngs > {output.dat}
