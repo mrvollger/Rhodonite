@@ -27,8 +27,6 @@ rule run_split_trf:
         fasta=rules.run_split_RepeatMasker.input.fasta,
     output:
         dat=temp("results/{sample}/trf/{scatteritem}/{scatteritem}.dat"),
-    resources:
-        mem=config.get("mem", 16),
     threads: 1
     conda:
         "../envs/env.yml"
