@@ -33,19 +33,19 @@ rule run_DupMasker_step_1:
 
 rule setup_DupMasker:
     output:
-        ready=temp("results/{sample}/RepeatMasker/DupMasker_ready.txt"),
+        build=temp("results/DupMasker.software.built.txt"),
     resources:
         mem=1,
     threads: 1
     conda:
         "../envs/env.yml"
     log:
-        "logs/{sample}/RepeatMasker/dup_masker_setup.log",
+        "logs/DupMasker_setup.log",
     params:
         libs=workflow.source_path("../scripts/Libs/Libraries/dupliconlib.fa"),
     shell:
         """
-        cp -n {params.libs} \
+        cp {params.libs} \
             $(dirname $(realpath $(which DupMasker)))/Libraries/dupliconlib.fa \
             || echo "duplicon lib already in place"
         touch {output}
@@ -111,9 +111,7 @@ rule run_DupMasker_step_3:
 
 rule DupMasker:
     input:
-        extra=gather.fasta(
-            rules.run_DupMasker_step_3.output.extra, allow_missing=True
-        ),
+        extra=gather.fasta(rules.run_DupMasker_step_3.output.extra, allow_missing=True),
         fai=lambda wc: f'{config["samples"][wc.sample]}.fai',
     output:
         extra="results/{sample}/RepeatMasker/duplicons.extra",
