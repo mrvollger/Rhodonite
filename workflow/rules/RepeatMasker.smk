@@ -1,14 +1,14 @@
 # this rule is required so that mutliple repeatmasker setup rules will not try and run at once.
 rule setup_RepeatMasker:
     output:
-        build=temp("results/{sample}/RepeatMasker/software.built.txt"),
+        build=temp("results/RepeatMasker.software.built.txt"),
     resources:
         mem=config.get("mem", 8),
     threads: config.get("threads", 8)
     conda:
         "../envs/env.yml"
     log:
-        "logs/{sample}/RepeatMasker/build.log",
+        "logs/RepeatMasker.build.log",
     params:
         opts=config.get("RepeatMaskerOptions", "-s -xsmall -e ncbi"),
         species=config.get("RepeatMaskerSpecies", "human"),
