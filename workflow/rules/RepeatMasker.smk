@@ -9,10 +9,21 @@ rule setup_RepeatMasker:
         "../envs/env.yml"
     log:
         "logs/{sample}/RepeatMasker/build.log",
+    params:
+        opts=config.get("RepeatMaskerOptions", "-s -xsmall -e ncbi"),
+        species=config.get("RepeatMaskerSpecies", "human"),
     shell:
         """
+        printf \
+            ">n\naaaaaaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n" \
+            > {resources.tmpdir}/build.fa
+
+        RepeatMasker \
+            {params.opts} \
+            -species {params.species} \
+            -pa {threads} \
+            {resources.tmpdir}/build.fa  2> {log}
         touch {output.build}
-        RepeatMasker {output.build} 2> {log}
         """
 
 
@@ -21,9 +32,7 @@ rule run_split_RepeatMasker:
         build=rules.setup_RepeatMasker.output.build,
         fasta="results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa",
     output:
-        msk=temp(
-            "results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.masked"
-        ),
+        msk=temp("results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.masked"),
         out=temp("results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.out"),
         cat=temp("results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.cat"),
         cat_all=temp(
@@ -64,9 +73,7 @@ rule make_RepeatMasker_bed:
     input:
         out=rules.run_split_RepeatMasker.output.out,
     output:
-        bed=temp(
-            "results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.rm.bed"
-        ),
+        bed=temp("results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.rm.bed"),
     resources:
         mem=config.get("mem", 8),
     conda:
