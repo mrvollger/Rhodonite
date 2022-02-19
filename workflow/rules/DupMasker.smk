@@ -54,7 +54,7 @@ rule setup_DupMasker:
 
 rule run_DupMasker_step_2:
     input:
-        ready=rules.setup_DupMasker.output.ready,
+        build=rules.setup_DupMasker.output.build,
         fasta=rules.run_split_RepeatMasker.input.fasta,
         out=rules.run_split_RepeatMasker.output.out,
     output:
