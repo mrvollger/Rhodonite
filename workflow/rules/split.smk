@@ -8,7 +8,7 @@ rule split_fasta:
             )
         ),
     resources:
-        mem=config.get("mem", 8),
+        mem_mb=config.get("mem", 1024 * 8),
     threads: 1
     conda:
         "../envs/env.yml"
@@ -25,7 +25,7 @@ rule unzip_fasta:
         fasta=temp("results/unzipped/{sample}.fasta"),
         fai=temp("results/unzipped/{sample}.fasta.fai"),
     resources:
-        mem=config.get("mem", 8),
+        mem_mb=config.get("mem", 1024 * 8),
     threads: 1
     conda:
         "../envs/env.yml"

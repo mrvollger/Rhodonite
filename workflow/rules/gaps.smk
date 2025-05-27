@@ -1,11 +1,10 @@
-
 rule run_split_gaps:
     input:
         fasta=rules.run_split_RepeatMasker.input.fasta,
     output:
         bed=temp("results/{sample}/gaps/{scatteritem}/{scatteritem}.bed"),
     resources:
-        mem=config.get("mem", 16),
+        mem_mb=1024 * 16,
     threads: 1
     conda:
         "../envs/env.yml"
@@ -22,7 +21,7 @@ rule gaps:
     output:
         bed="results/{sample}/gaps/gaps.bed.gz",
     resources:
-        mem=config.get("mem", 8),
+        mem_mb=config.get("mem", 1024 * 8),
     threads: 1
     conda:
         "../envs/env.yml"

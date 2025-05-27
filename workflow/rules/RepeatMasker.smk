@@ -3,7 +3,7 @@ rule setup_RepeatMasker:
     output:
         build=temp("results/RepeatMasker.software.built.txt"),
     resources:
-        mem=config.get("mem", 8),
+        mem_mb=config.get("mem", 1024 * 8),
     threads: config.get("threads", 8)
     conda:
         "../envs/env.yml"
@@ -40,7 +40,7 @@ rule run_split_RepeatMasker:
         ),
         tbl=temp("results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.tbl"),
     resources:
-        mem=config.get("mem", 8),
+        mem_mb=config.get("mem", 1024 * 8),
     threads: config.get("threads", 8)
     conda:
         "../envs/env.yml"
@@ -75,7 +75,7 @@ rule make_RepeatMasker_bed:
     output:
         bed=temp("results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.rm.bed"),
     resources:
-        mem=config.get("mem", 8),
+        mem_mb=config.get("mem", 1024 * 8),
     conda:
         "../envs/env.yml"
     log:
@@ -96,7 +96,7 @@ rule RepeatMasker:
         out="results/{sample}/RepeatMasker/RM.out",
         bed="results/{sample}/RepeatMasker/RM.bed.gz",
     resources:
-        mem=config.get("mem", 8),
+        mem_mb=config.get("mem", 1024 * 8),
     threads: 1
     conda:
         "../envs/env.yml"

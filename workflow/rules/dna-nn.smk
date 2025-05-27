@@ -3,7 +3,7 @@ rule make_dna_brnn:
         dna_brnn="temp/dna-nn/dna-brnn",
         model="temp/dna-nn/models/attcc-alpha.knm",
     resources:
-        mem=1,
+        mem_mb=1024 * 1,
     threads: 1
     conda:
         "../envs/env.yml"
@@ -31,7 +31,7 @@ rule run_split_dna_brnn:
     output:
         bed=temp("results/{sample}/dna-brnn/{scatteritem}.bed"),
     resources:
-        mem=config.get("mem", 8),
+        mem_mb=config.get("mem", 1024 * 8),
     threads: config.get("threads", 4)
     conda:
         "../envs/env.yml"
@@ -55,7 +55,7 @@ rule dna_brnn:
         bed="results/{sample}/dna-brnn/dna-brnn.bed.gz",
         bed9="results/{sample}/dna-brnn/dna-brnn.bed9.gz",
     resources:
-        mem=config.get("mem", 8),
+        mem_mb=config.get("mem", 1024 * 8),
     threads: 1
     conda:
         "../envs/env.yml"

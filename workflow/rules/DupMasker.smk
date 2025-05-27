@@ -8,7 +8,7 @@ rule run_DupMasker_step_1:
     output:
         dup=temp("temp/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.dupout"),
     resources:
-        mem=config.get("mem", 16),
+        mem_mb=1024 * 16,
     threads: config.get("threads", 16)
     conda:
         "../envs/env.yml"
@@ -35,7 +35,7 @@ rule setup_DupMasker:
     output:
         build=temp("results/DupMasker.software.built.txt"),
     resources:
-        mem=1,
+        mem_mb=1024 * 1,
     threads: 1
     conda:
         "../envs/env.yml"
@@ -68,7 +68,7 @@ rule run_DupMasker_step_2:
             "results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.dup.tmpmask.cat.all"
         ),
     resources:
-        mem=config.get("mem", 8),
+        mem_mb=config.get("mem", 1024 * 8),
     threads: config.get("threads", 4)
     conda:
         "../envs/env.yml"
@@ -91,7 +91,7 @@ rule run_DupMasker_step_3:
             "results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.duplicons.extra"
         ),
     resources:
-        mem=4,
+        mem_mb=1024 * 4,
     threads: 1
     conda:
         "../envs/env.yml"
@@ -117,7 +117,7 @@ rule DupMasker:
         extra="results/{sample}/RepeatMasker/duplicons.extra",
         bed="results/{sample}/RepeatMasker/duplicons.bed.gz",
     resources:
-        mem=4,
+        mem_mb=1024 * 4,
     threads: 1
     conda:
         "../envs/env.yml"
