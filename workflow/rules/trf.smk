@@ -34,7 +34,7 @@ rule run_split_trf:
         "logs/{sample}/trf/{scatteritem}.log",
     resources:
         # 8GB of ram is not enough for human with -l 25, 16GB seems like it works. 
-        mem_mb=config.get("trf_mem", 1024*16),
+        mem_mb=config.get("trf_mem", 1024 * 16),
     params:
         trf_opts=config.get("trf_opts", "2 5 7 80 10 50 2000 -l 25"),
     shell:
@@ -50,7 +50,7 @@ rule trf_bed:
         bed=temp("temp/{sample}/trf/trf.bed"),
     threads: 1
     resources:
-        mem_mb=config.get("mem", 1024*8),
+        mem_mb=config.get("mem", 1024 * 8),
     conda:
         "../envs/env.yml"
     log:
@@ -69,7 +69,7 @@ rule trf:
         bed="results/{sample}/trf/trf.bed.gz",
     threads: 1
     resources:
-        mem_mb=config.get("mem", 1024*8),
+        mem_mb=config.get("mem", 1024 * 8),
     conda:
         "../envs/env.yml"
     log:
