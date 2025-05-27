@@ -4,18 +4,18 @@ rule dust_count:
     output:
         counts=temp("results/{sample}/windowmasker/dust.counts"),
     resources:
-        mem=config.get("mem", 16),
+        mem_mb=1024 * 16,
     threads: 1
     conda:
         "../envs/blast.yml"
     log:
         "logs/{sample}/windowmasker/dust_count.log",
     params:
-        mem=config.get("mem", 16),
-        mem_mb=(config.get("mem", 16) - 2) * 1000,
+        mem_mb=1024 * 18,
+        mem_use=1024 * 16,
     shell:
         """
-        windowmasker -mem {params.mem} -mk_counts -in {input.ref} -out {output.counts}  
+        windowmasker -mem {params.mem_use} -mk_counts -in {input.ref} -out {output.counts}  
         """
 
 
@@ -27,7 +27,7 @@ rule run_windowmasker:
     output:
         intervals=temp("temp/{sample}/windowmasker/dust.intervals"),
     resources:
-        mem=config.get("mem", 16),
+        mem_mb=1024 * 16,
     threads: 1
     conda:
         "../envs/blast.yml"
@@ -46,7 +46,7 @@ rule run_windowmasker_bed:
     output:
         bed=temp("temp/{sample}/windowmasker/dust.bed.gz"),
     resources:
-        mem=config.get("mem", 16),
+        mem_mb=1024 * 16,
     threads: 1
     conda:
         "../envs/env.yml"
@@ -65,7 +65,7 @@ rule windowmasker:
         bed="results/{sample}/windowmasker/dust.bed.gz",
         intervals="results/{sample}/windowmasker/dust.intervals",
     resources:
-        mem=config.get("mem", 16),
+        mem_mb=1024 * 16,
     threads: 1
     conda:
         "../envs/env.yml"
