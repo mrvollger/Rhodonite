@@ -2,14 +2,14 @@ rule dust_count:
     input:
         ref=rules.unzip_fasta.output.fasta,
     output:
-        counts=temp("results/{sample}/windowmasker/dust.counts"),
+        counts=temp(os.path.join(OUT_DIR, "{sample}/windowmasker/dust.counts")),
     resources:
         mem=config.get("mem", 16),
     threads: 1
     conda:
         "../envs/blast.yml"
     log:
-        "logs/{sample}/windowmasker/dust_count.log",
+        os.path.join(LOG_DIR, "{sample}/windowmasker/dust_count.log"),
     params:
         mem=config.get("mem", 16),
         mem_mb=(config.get("mem", 16) - 2) * 1000,
@@ -32,7 +32,7 @@ rule run_windowmasker:
     conda:
         "../envs/blast.yml"
     log:
-        "logs/{sample}/windowmasker/intervals.log",
+        os.path.join(LOG_DIR, "{sample}/windowmasker/intervals.log"),
     shell:
         """
         windowmasker -ustat {input.counts} -dust true -in {input.ref} \
@@ -51,7 +51,7 @@ rule run_windowmasker_bed:
     conda:
         "../envs/env.yml"
     log:
-        "logs/{sample}/windowmasker/bed.log",
+        os.path.join(LOG_DIR, "{sample}/windowmasker/bed.log"),
     script:
         "../scripts/dust_to_bed.py"
 
@@ -62,15 +62,15 @@ rule windowmasker:
         bed=rules.run_windowmasker_bed.output.bed,
         fai=lambda wc: f'{config["samples"][wc.sample]}.fai',
     output:
-        bed="results/{sample}/windowmasker/dust.bed.gz",
-        intervals="results/{sample}/windowmasker/dust.intervals",
+        bed=os.path.join(OUT_DIR, "{sample}/windowmasker/dust.bed.gz"),
+        intervals=os.path.join(OUT_DIR, "{sample}/windowmasker/dust.intervals"),
     resources:
         mem=config.get("mem", 16),
     threads: 1
     conda:
         "../envs/env.yml"
     log:
-        "logs/{sample}/windowmasker/done.log",
+        os.path.join(LOG_DIR, "{sample}/windowmasker/done.log"),
     shell:
         """
         cp {input.intervals} {output.intervals}

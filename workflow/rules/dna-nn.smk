@@ -8,7 +8,7 @@ rule make_dna_brnn:
     conda:
         "../envs/env.yml"
     log:
-        "logs/make-dna-brnn.log",
+        os.path.join(LOG_DIR, "make-dna-brnn.log"),
     shell:
         """
         rm -rf temp/temp/dna-nn
@@ -29,14 +29,14 @@ rule run_split_dna_brnn:
         dna_brnn=rules.make_dna_brnn.output.dna_brnn,
         model=rules.make_dna_brnn.output.model,
     output:
-        bed=temp("results/{sample}/dna-brnn/{scatteritem}.bed"),
+        bed=temp(os.path.join(OUT_DIR, "{sample}/dna-brnn/{scatteritem}.bed")),
     resources:
         mem=config.get("mem", 8),
     threads: config.get("threads", 4)
     conda:
         "../envs/env.yml"
     log:
-        "logs/{sample}/dna-brnn/{scatteritem}.log",
+        os.path.join(LOG_DIR, "{sample}/dna-brnn/{scatteritem}.log"),
     shell:
         """
         {input.dna_brnn} \
@@ -52,15 +52,15 @@ rule dna_brnn:
         bed=gather.fasta(rules.run_split_dna_brnn.output.bed, allow_missing=True),
         fai=lambda wc: f'{config["samples"][wc.sample]}.fai',
     output:
-        bed="results/{sample}/dna-brnn/dna-brnn.bed.gz",
-        bed9="results/{sample}/dna-brnn/dna-brnn.bed9.gz",
+        bed=os.path.join(OUT_DIR, "{sample}/dna-brnn/dna-brnn.bed.gz"),
+        bed9=os.path.join(OUT_DIR, "{sample}/dna-brnn/dna-brnn.bed9.gz"),
     resources:
         mem=config.get("mem", 8),
     threads: 1
     conda:
         "../envs/env.yml"
     log:
-        "logs/{sample}/dna-brnn.log",
+        os.path.join(LOG_DIR, "{sample}/dna-brnn.log"),
     params:
         red="255,0,0",
         blue="0,0,255",

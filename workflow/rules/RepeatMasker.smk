@@ -1,14 +1,14 @@
 # this rule is required so that mutliple repeatmasker setup rules will not try and run at once.
 rule setup_RepeatMasker:
     output:
-        build=temp("results/RepeatMasker.software.built.txt"),
+        build=temp(os.path.join(OUT_DIR, "RepeatMasker.software.built.txt")),
     resources:
         mem=config.get("mem", 8),
     threads: config.get("threads", 8)
     conda:
         "../envs/env.yml"
     log:
-        "logs/RepeatMasker.build.log",
+        os.path.join(LOG_DIR, "RepeatMasker.build.log"),
     params:
         opts=config.get("RepeatMaskerOptions", "-s -xsmall -e ncbi"),
         species=config.get("RepeatMaskerSpecies", "human"),
@@ -30,22 +30,22 @@ rule setup_RepeatMasker:
 rule run_split_RepeatMasker:
     input:
         build=rules.setup_RepeatMasker.output.build,
-        fasta="results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa",
+        fasta=os.path.join(OUT_DIR, "{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa"),
     output:
-        msk=temp("results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.masked"),
-        out=temp("results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.out"),
-        cat=temp("results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.cat"),
+        msk=temp(os.path.join(OUT_DIR, "{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.masked")),
+        out=temp(os.path.join(OUT_DIR, "{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.out")),
+        cat=temp(os.path.join(OUT_DIR, "{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.cat")),
         cat_all=temp(
-            "results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.cat.all"
+            os.path.join(OUT_DIR, "{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.cat.all")
         ),
-        tbl=temp("results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.tbl"),
+        tbl=temp(os.path.join(OUT_DIR, "{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.tbl")),
     resources:
         mem=config.get("mem", 8),
     threads: config.get("threads", 8)
     conda:
         "../envs/env.yml"
     log:
-        "logs/{sample}/RepeatMasker/{scatteritem}.log",
+        os.path.join(LOG_DIR, "{sample}/RepeatMasker/{scatteritem}.log"),
     params:
         opts=config.get("RepeatMaskerOptions", "-s -xsmall -e ncbi"),
         species=config.get("RepeatMaskerSpecies", "human"),
@@ -73,13 +73,13 @@ rule make_RepeatMasker_bed:
     input:
         out=rules.run_split_RepeatMasker.output.out,
     output:
-        bed=temp("results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.rm.bed"),
+        bed=temp(os.path.join(OUT_DIR, "{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.rm.bed")),
     resources:
         mem=config.get("mem", 8),
     conda:
         "../envs/env.yml"
     log:
-        "logs/{sample}/RepeatMasker/{scatteritem}.bed.log",
+        os.path.join(LOG_DIR, "{sample}/RepeatMasker/{scatteritem}.bed.log"),
     threads: 1
     shell:
         """
@@ -93,15 +93,15 @@ rule RepeatMasker:
         bed=gather.fasta(rules.make_RepeatMasker_bed.output.bed, allow_missing=True),
         fai=lambda wc: f'{config["samples"][wc.sample]}.fai',
     output:
-        out="results/{sample}/RepeatMasker/RM.out",
-        bed="results/{sample}/RepeatMasker/RM.bed.gz",
+        out=os.path.join(OUT_DIR, "{sample}/RepeatMasker/RM.out"),
+        bed=os.path.join(OUT_DIR, "{sample}/RepeatMasker/RM.bed.gz"),
     resources:
         mem=config.get("mem", 8),
     threads: 1
     conda:
         "../envs/env.yml"
     log:
-        "logs/{sample}/RepeatMasker.log",
+        os.path.join(LOG_DIR, "{sample}/RepeatMasker.log"),
     shell:
         """
         set +o pipefail

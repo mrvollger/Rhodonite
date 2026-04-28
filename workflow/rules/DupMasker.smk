@@ -13,7 +13,7 @@ rule run_DupMasker_step_1:
     conda:
         "../envs/env.yml"
     log:
-        "logs/{sample}/RepeatMasker/dup_masker_1.{scatteritem}.log",
+        os.path.join(LOG_DIR, "{sample}/RepeatMasker/dup_masker_1.{scatteritem}.log"),
     params:
         dupmasker=workflow.source_path("../scripts/DupMaskerParallel"),
         libs=workflow.source_path("../scripts/Libs/Libraries/dupliconlib.fa"),
@@ -33,14 +33,14 @@ rule run_DupMasker_step_1:
 
 rule setup_DupMasker:
     output:
-        build=temp("results/DupMasker.software.built.txt"),
+        build=temp(os.path.join(OUT_DIR, "DupMasker.software.built.txt")),
     resources:
         mem=1,
     threads: 1
     conda:
         "../envs/env.yml"
     log:
-        "logs/DupMasker_setup.log",
+        os.path.join(LOG_DIR, "DupMasker_setup.log"),
     params:
         libs=workflow.source_path("../scripts/Libs/Libraries/dupliconlib.fa"),
     shell:
@@ -59,13 +59,21 @@ rule run_DupMasker_step_2:
         out=rules.run_split_RepeatMasker.output.out,
     output:
         dup=temp(
-            "results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.duplicons"
+            os.path.join(
+                OUT_DIR,
+                "{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.duplicons",
+            )
         ),
         dup_out=temp(
-            "results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.dupout"
+            os.path.join(
+                OUT_DIR, "{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.dupout"
+            )
         ),
         dup_all=temp(
-            "results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.dup.tmpmask.cat.all"
+            os.path.join(
+                OUT_DIR,
+                "{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.dup.tmpmask.cat.all",
+            )
         ),
     resources:
         mem=config.get("mem", 8),
@@ -73,7 +81,7 @@ rule run_DupMasker_step_2:
     conda:
         "../envs/env.yml"
     log:
-        "logs/{sample}/RepeatMasker/dup_masker_2.{scatteritem}.log",
+        os.path.join(LOG_DIR, "{sample}/RepeatMasker/dup_masker_2.{scatteritem}.log"),
     shell:
         """
         DupMasker \
@@ -88,7 +96,10 @@ rule run_DupMasker_step_3:
         dup=rules.run_DupMasker_step_2.output.dup,
     output:
         extra=temp(
-            "results/{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.duplicons.extra"
+            os.path.join(
+                OUT_DIR,
+                "{sample}/RepeatMasker/{scatteritem}/{scatteritem}.fa.duplicons.extra",
+            )
         ),
     resources:
         mem=4,
@@ -96,7 +107,7 @@ rule run_DupMasker_step_3:
     conda:
         "../envs/env.yml"
     log:
-        "logs/{sample}/RepeatMasker/dup_masker_3.{scatteritem}.log",
+        os.path.join(LOG_DIR, "{sample}/RepeatMasker/dup_masker_3.{scatteritem}.log"),
     params:
         DupMask_parserV6=workflow.source_path("../scripts/DupMask_parserV6.pl"),
         colors=workflow.source_path(
@@ -114,15 +125,15 @@ rule DupMasker:
         extra=gather.fasta(rules.run_DupMasker_step_3.output.extra, allow_missing=True),
         fai=lambda wc: f'{config["samples"][wc.sample]}.fai',
     output:
-        extra="results/{sample}/RepeatMasker/duplicons.extra",
-        bed="results/{sample}/RepeatMasker/duplicons.bed.gz",
+        extra=os.path.join(OUT_DIR, "{sample}/RepeatMasker/duplicons.extra"),
+        bed=os.path.join(OUT_DIR, "{sample}/RepeatMasker/duplicons.bed.gz"),
     resources:
         mem=4,
     threads: 1
     conda:
         "../envs/env.yml"
     log:
-        "logs/{sample}/RepeatMasker/DupMasker.log",
+        os.path.join(LOG_DIR, "{sample}/RepeatMasker/DupMasker.log"),
     params:
         DupMasker_bed9=workflow.source_path("../scripts/DupMasker_bed9.py"),
     shell:

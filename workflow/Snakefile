@@ -6,11 +6,12 @@ from snakemake.utils import min_version
 
 min_version("6.0")
 
-S_DIR = os.path.realpath(os.path.dirname(srcdir("Snakefile")))
 shell.prefix(f"set -eo pipefail;")
 
 
-TEMP_DIR = config.pop("tempdir", "temp")
+OUT_DIR = config.get("outdir", "results")
+LOG_DIR = config.get("logdir", "logs")
+TEMP_DIR = config.get("tempdir", "temp")
 if TEMP_DIR != "temp":
     if os.path.exists("temp"):
         if os.path.islink("temp") and os.path.realpath("temp") == os.path.realpath(

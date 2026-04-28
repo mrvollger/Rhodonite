@@ -26,12 +26,12 @@ rule run_split_trf:
     input:
         fasta=rules.run_split_RepeatMasker.input.fasta,
     output:
-        dat=temp("results/{sample}/trf/{scatteritem}/{scatteritem}.dat"),
+        dat=temp(os.path.join(OUT_DIR, "{sample}/trf/{scatteritem}/{scatteritem}.dat")),
     threads: 1
     conda:
         "../envs/env.yml"
     log:
-        "logs/{sample}/trf/{scatteritem}.log",
+        os.path.join(LOG_DIR, "{sample}/trf/{scatteritem}.log"),
     resources:
         # 8GB of ram is not enough for human with -l 25, 16GB seems like it works. 
         mem=config.get("trf_mem", 16),
@@ -54,7 +54,7 @@ rule trf_bed:
     conda:
         "../envs/env.yml"
     log:
-        "logs/{sample}/trf.log",
+        os.path.join(LOG_DIR, "{sample}/trf.log"),
     script:
         "../scripts/trf_to_bed.py"
 
@@ -65,15 +65,15 @@ rule trf:
         dat=gather.fasta(rules.run_split_trf.output.dat, allow_missing=True),
         fai=lambda wc: f'{config["samples"][wc.sample]}.fai',
     output:
-        dat="results/{sample}/trf/trf.dat",
-        bed="results/{sample}/trf/trf.bed.gz",
+        dat=os.path.join(OUT_DIR, "{sample}/trf/trf.dat"),
+        bed=os.path.join(OUT_DIR, "{sample}/trf/trf.bed.gz"),
     threads: 1
     resources:
         mem=config.get("mem", 8),
     conda:
         "../envs/env.yml"
     log:
-        "logs/{sample}/trf.log",
+        os.path.join(LOG_DIR, "{sample}/trf.log"),
     shell:
         """
         cat {input.dat} > {output.dat}
